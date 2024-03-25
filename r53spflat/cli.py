@@ -60,6 +60,7 @@ def parse_arguments():
     
     with open(arguments.config) as config:
         settings = json.load(config)
+        arguments.profile = settings.get("profile")
         arguments.resolvers = settings.get("resolvers",[])
         arguments.toaddr = settings["email"]["to"]
         arguments.fromaddr = settings["email"]["from"]

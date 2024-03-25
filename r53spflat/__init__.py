@@ -9,7 +9,6 @@ from .r53_dns import TXTrec
 if "FileNotFoundError" not in locals():
     FileNotFoundError = IOError
 
-
 def flatten(
     input_records,
     dns_servers,
@@ -21,7 +20,8 @@ def flatten(
     update=False,
     email=True,
     lastresult=None,
-    force_update=False
+    force_update=False,
+    profile=None
 ):
     resolver = Resolver()
     if dns_servers:
@@ -58,7 +58,7 @@ def flatten(
                     toaddr=toaddress,
                 )
             if (mismatch and update) or force_update:
-                r53zone = TXTrec(domain)
+                r53zone = TXTrec(domain,profile)
                 numrecs = len(records)
                 print(f'\n**** Updating {numrecs} SPF Records for domain {domain}\n')        
                 for i in range(0,numrecs):
@@ -95,6 +95,7 @@ def main(args):
             update=args.update,
             email=args.sendemail,
             force_update=args.force_update,
+            profile=args.profile,
         )
         with open(args.output, "w+") as f:
             json.dump(spf, f, indent=4, sort_keys=True)

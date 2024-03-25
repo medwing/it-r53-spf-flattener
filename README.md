@@ -1,5 +1,13 @@
+
 Route53 SPF Flattener
 =======
+Grant's Notes:
+cli.py --no-email --force is how we run it
+I have implement the profile as well so in the spfs.json you need
+"profile":"AdministratorAccess-657255803789"
+Or whatever your profile in in the AWS CLI if that's how you're using it.
+if you do not include this it SHOULD default to none and use the inbuilt method which does not require a profile
+
 
 * `r53spflat` is an extension to [sender-policy-flattener](https://github.com/cetanu/sender_policy_flattener) which is a different project maintaind by ***centanu***.
 * `r53spflat` can update the SPF TXT records in [Amazon Route53](https://aws.amazon.com/route53)

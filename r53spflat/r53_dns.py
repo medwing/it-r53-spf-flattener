@@ -12,9 +12,12 @@ def aws_ok(resp):
 class R53zone:
     """ Rt53 dns zone """
 
-    def __init__(self, domain):
+    def __init__(self, domain, profile=None):
 
-        self.r53 = boto3.client('route53')
+        if not profile: 
+            self.r53 = boto3.client('route53')
+        else:
+            self.r53 = boto3.Session(profile_name=profile).client('route53')
 
         zone_info = self.get_zoneid(domain)
         
@@ -92,12 +95,12 @@ class R53zone:
 class   Rt53rec:
     """ Rt53 Resource Record """
 
-    def __init__(self, domain, type='A', ttl=300):
+    def __init__(self, domain, type='A', ttl=300, profile=None):
         """ Manage Rt53 Resource Record """
 
         self.type = type.upper()
         self.ttl = ttl
-        self.zone = R53zone(domain)
+        self.zone = R53zone(domain,profile)
         self.zonename = self.zone.zonename
 
 
@@ -189,9 +192,9 @@ class   Rt53rec:
 class TXTrec(Rt53rec):
     """ Rt53 TXT record """
 
-    def __init__(self,domain):
+    def __init__(self,domain,profile):
 
-        super().__init__(domain,'TXT')
+        super().__init__(domain,'TXT',profile=profile)
 
 
     def _quote_txt(self, contents):
